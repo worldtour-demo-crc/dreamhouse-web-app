@@ -70,3 +70,7 @@ gulp.task('scripts', copyScripts);
 gulp.task('clean', function(){
   return del('www/build');
 });
+
+gulp.task('serve', ['watch'], function() {
+  return require('./app.js');
+});
