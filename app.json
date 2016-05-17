@@ -11,6 +11,6 @@
     }
   },
   "addons": [
-    "heroku-postgres"
+    "heroku-postgresql"
   ]
 }
