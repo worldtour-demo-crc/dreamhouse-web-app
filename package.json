@@ -4,7 +4,7 @@
     "node": "6.1.x"
   },
   "scripts": {
-    "start": "node app",
+    "start": "node server",
     "postinstall": "gulp build"
   },
   "dependencies": {
@@ -16,7 +16,9 @@
     "ionic-native": "^1.1.0",
     "ionicons": "3.0.0",
     "rxjs": "5.0.0-beta.2",
-    "express": "~4.13.3"
+    "express": "^4.13.3",
+    "body-parser": "^1.9.2",
+    "pg": "^4.5.5"
   },
   "devDependencies": {
     "del": "2.2.0",

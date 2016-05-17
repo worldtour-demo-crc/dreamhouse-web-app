@@ -20,12 +20,12 @@ export class PropertyDetailsPage {
     }
 
     ngOnInit() {
-        this.propertyService.findById(this.property.id).then(property => this.property = property);
+        this.propertyService.findById(this.property.id).subscribe(property => this.property = property);
     }
 
     favorite(event, property) {
 
-        this.propertyService.favorite(property).then(() => {
+        this.propertyService.favorite(property).subscribe(() => {
             let alert = Alert.create({
                 title: 'Favorites',
                 subTitle: 'Property added to your favorites',

@@ -22,7 +22,7 @@ export class FavoriteListPage {
     }
 
     loadFavorites() {
-        this.propertyService.getFavorites().then(favorites => this.favorites = favorites);
+        this.propertyService.getFavorites().subscribe(favorites => this.favorites = favorites);
     }
 
     itemTapped(event, favorite) {
@@ -32,7 +32,7 @@ export class FavoriteListPage {
     }
 
     deleteItem(event, favorite) {
-        this.propertyService.unfavorite(favorite).then(() => this.loadFavorites());
+        this.propertyService.unfavorite(favorite).subscribe(() => this.loadFavorites());
     }
 
 }

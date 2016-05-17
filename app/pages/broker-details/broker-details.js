@@ -17,7 +17,7 @@ export class BrokerDetailsPage {
     }
 
     ngOnInit() {
-        this.brokerService.findById(this.broker.id).then(broker => this.broker = broker);
+        this.brokerService.findById(this.broker.id).subscribe(broker => this.broker = broker);
     }
 
 }

@@ -72,5 +72,5 @@ gulp.task('clean', function(){
 });
 
 gulp.task('serve', ['watch'], function() {
-  return require('./app.js');
+  return require('./server.js');
 });

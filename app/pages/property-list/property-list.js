@@ -18,7 +18,7 @@ export class PropertyListPage {
     }
 
     ngOnInit() {
-        this.propertyService.findAll().then(properties => this.properties = properties);
+        this.propertyService.findAll().subscribe(properties => this.properties = properties);
     }
 
     itemTapped(event, property) {

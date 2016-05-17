@@ -18,7 +18,7 @@ export class BrokerListPage {
     }
 
     ngOnInit() {
-        this.brokerService.findAll().then(brokers => this.brokers = brokers);
+        this.brokerService.findAll().subscribe(brokers => this.brokers = brokers);
     }
 
     itemTapped(event, broker) {
