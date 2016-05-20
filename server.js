@@ -24,6 +24,8 @@ var propertyTable = 'property__c';
 var favoriteTable = 'favorite__c';
 var brokerTable = 'broker__c';
 
+var user__c = 'c1';
+
 // setup the demo data if needed
 client.query('SELECT * FROM salesforce.broker__c', function(error, data) {
   if (error !== null) {
@@ -40,11 +42,22 @@ client.query('SELECT * FROM salesforce.broker__c', function(error, data) {
     propertyTable = schema + 'property__c';
     favoriteTable = schema + 'favorite__c';
     brokerTable = schema + 'broker__c';
+
+    client.query('SELECT DISTINCT(user__c) FROM salesforce.favorite__c', function(error, data) {
+      var userIds = data.rows.map(function(row) {
+        return row.user__c;
+      });
+
+      userIds = userIds.filter(function(userId) {
+        return userId != null;
+      });
+
+      user__c = userIds[0];
+    });
   }
 });
 
-// todo: Make this work with Heroku Connect
-var user__c = 'c1';
+
 
 app.get('/property', function(req, res) {
   client.query('SELECT * FROM ' + propertyTable, function(error, data) {
