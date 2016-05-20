@@ -61,6 +61,10 @@ export class PropertyService {
         return this.http.get('/favorite').map(response => response.json().map(prettifyFavorite));
     }
 
+    getRecommendations() {
+        return this.http.get('/recommendations').map(response => response.json().map(prettifyProperty));
+    }
+
     favorite(property) {
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');

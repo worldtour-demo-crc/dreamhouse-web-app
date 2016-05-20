@@ -6,6 +6,7 @@ import {WelcomePage} from './pages/welcome/welcome';
 import {PropertyListPage} from './pages/property-list/property-list';
 import {BrokerListPage} from './pages/broker-list/broker-list';
 import {FavoriteListPage} from './pages/favorite-list/favorite-list';
+import {RecommendationListPage} from './pages/recommendation-list/recommendation-list';
 import {PropertyService} from './services/property-service';
 import {BrokerService} from './services/broker-service';
 
@@ -33,7 +34,8 @@ class MyApp {
             {title: 'Welcome', component: WelcomePage, icon: "bookmark"},
             {title: 'Properties', component: PropertyListPage, icon: "home"},
             {title: 'Brokers', component: BrokerListPage, icon: "people"},
-            {title: 'Favorites', component: FavoriteListPage, icon: "star"}
+            {title: 'Favorites', component: FavoriteListPage, icon: "star"},
+            {title: 'Recommendations', component: RecommendationListPage, icon: "heart"}
         ];
 
         this.rootPage = WelcomePage;

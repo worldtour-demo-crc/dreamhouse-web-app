@@ -43,6 +43,8 @@ client.query('SELECT * FROM salesforce.broker__c', function(error, data) {
   }
 });
 
+// todo: Make this work with Heroku Connect
+var user__c = 'c1';
 
 app.get('/property', function(req, res) {
   client.query('SELECT * FROM ' + propertyTable, function(error, data) {
@@ -57,14 +59,20 @@ app.get('/property/:id', function(req, res) {
 });
 
 
+app.get('/favorite-all', function(req, res) {
+  client.query('SELECT ' + propertyTable + '.*, ' + favoriteTable + '.sfid AS favorite__c_sfid, ' + favoriteTable + '.user__c AS favorite__c_user__c FROM ' + propertyTable + ', ' + favoriteTable + ' WHERE ' + propertyTable + '.sfid = ' + favoriteTable + '.property__c', function(error, data) {
+    res.json(data.rows);
+  });
+});
+
 app.get('/favorite', function(req, res) {
-  client.query('SELECT ' + propertyTable + '.*, ' + favoriteTable + '.sfid AS favorite__c_sfid FROM ' + propertyTable + ', ' + favoriteTable + ' WHERE ' + propertyTable + '.sfid = ' + favoriteTable + '.property__c', function(error, data) {
+  client.query('SELECT ' + propertyTable + '.*, ' + favoriteTable + '.sfid AS favorite__c_sfid, ' + favoriteTable + '.user__c AS favorite__c_user__c FROM ' + propertyTable + ', ' + favoriteTable + ' WHERE ' + propertyTable + '.sfid = ' + favoriteTable + '.property__c AND ' + favoriteTable + '.user__c = $1', [user__c], function(error, data) {
     res.json(data.rows);
   });
 });
 
 app.post('/favorite', function(req, res) {
-  client.query('INSERT INTO ' + favoriteTable + ' (property__c) VALUES ($1)', [req.body.property__c], function(error, data) {
+  client.query('INSERT INTO ' + favoriteTable + ' (property__c, user__c) VALUES ($1, $2)', [req.body.property__c, user__c], function(error, data) {
     res.json(data);
   });
 });
@@ -87,6 +95,34 @@ app.get('/broker/:sfid', function(req, res) {
     res.json(data.rows[0]);
   });
 });
+
+
+app.get('/recommendations', function(req, res) {
+  var url = process.env.PIO_ENGINE_URL + "/queries.json";
+
+  var options = {
+    uri: url,
+    method: 'POST',
+    json: {
+      "contactId": user__c,
+      "numResults": 10
+    }
+  };
+
+  require('request').post(options, function (error, response, body) {
+    client.query('SELECT * FROM ' + propertyTable, function(error, data) {
+      var recommendations = Object.keys(body.propertyRatings).map(propertyId =>
+        data.rows.find(property => property.sfid == propertyId)
+      );
+
+      // todo: exclude properties user already has favorited
+
+      res.json(recommendations);
+    });
+  });
+
+});
+
 
 var port = process.env.PORT || 8200;
 
