@@ -111,9 +111,11 @@ app.get('/recommendations', function(req, res) {
 
   require('request').post(options, function (error, response, body) {
     client.query('SELECT * FROM ' + propertyTable, function(error, data) {
-      var recommendations = Object.keys(body.propertyRatings).map(propertyId =>
-        data.rows.find(property => property.sfid == propertyId)
-      );
+      var recommendations = Object.keys(body.propertyRatings).map(function(propertyId) {
+        return data.rows.find(function(property) {
+          return property.sfid == propertyId;
+        });
+      });
 
       // todo: exclude properties user already has favorited
 
