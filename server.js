@@ -104,7 +104,7 @@ app.get('/recommendations', function(req, res) {
     uri: url,
     method: 'POST',
     json: {
-      "contactId": user__c,
+      "userId": user__c,
       "numResults": 10
     }
   };
