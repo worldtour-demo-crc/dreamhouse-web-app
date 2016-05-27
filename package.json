@@ -18,9 +18,7 @@
     "rxjs": "5.0.0-beta.2",
     "express": "^4.13.3",
     "body-parser": "^1.9.2",
-    "pg": "^4.5.5"
-  },
-  "devDependencies": {
+    "pg": "^4.5.5",
     "del": "2.2.0",
     "gulp": "3.9.1",
     "gulp-watch": "4.3.5",
