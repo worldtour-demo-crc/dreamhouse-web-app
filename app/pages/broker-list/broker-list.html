@@ -7,7 +7,7 @@
 
 <ion-content>
     <ion-list>
-        <button ion-item *ngFor="#broker of brokers" (click)="itemTapped($event, broker)">
+        <button ion-item *ngFor="let broker of brokers" (click)="itemTapped($event, broker)">
             <ion-avatar item-left>
                 <img src="{{broker.picture}}"/>
             </ion-avatar>

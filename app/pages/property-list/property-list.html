@@ -7,7 +7,7 @@
 
 <ion-content>
     <ion-list>
-        <button ion-item *ngFor="#property of properties" (click)="itemTapped($event, property)">
+        <button ion-item *ngFor="let property of properties" (click)="itemTapped($event, property)">
             <ion-thumbnail item-left>
                 <img src="{{property.thumbnail}}"/>
             </ion-thumbnail>

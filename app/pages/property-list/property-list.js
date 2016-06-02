@@ -1,4 +1,4 @@
-import {OnInit} from 'angular2/core';
+import {OnInit} from '@angular/core';
 import {Page, NavController} from 'ionic-angular';
 import {PropertyDetailsPage} from '../property-details/property-details';
 import {PropertyService} from '../../services/property-service';

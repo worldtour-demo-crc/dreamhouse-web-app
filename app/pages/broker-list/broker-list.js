@@ -1,4 +1,4 @@
-import {OnInit} from 'angular2/core';
+import {OnInit} from '@angular/core';
 import {Page, NavController} from 'ionic-angular';
 import {BrokerDetailsPage} from '../broker-details/broker-details';
 import {BrokerService} from '../../services/broker-service';

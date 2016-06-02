@@ -1,5 +1,7 @@
-import {App, IonicApp, Platform} from 'ionic-angular';
-import {HTTP_PROVIDERS} from 'angular2/http';
+import {ViewChild} from '@angular/core';
+import {HTTP_PROVIDERS} from '@angular/http';
+import {App, Platform} from 'ionic-angular';
+
 import {WelcomePage} from './pages/welcome/welcome';
 import {PropertyListPage} from './pages/property-list/property-list';
 import {BrokerListPage} from './pages/broker-list/broker-list';
@@ -12,17 +14,19 @@ import {BrokerService} from './services/broker-service';
     config: {
         mode: "ios"
     },
+    queries: {
+        nav: new ViewChild('content')
+    },
     providers: [HTTP_PROVIDERS, PropertyService, BrokerService]
 })
 class MyApp {
 
     static get parameters() {
-        return [[IonicApp], [Platform]];
+        return [[Platform]];
     }
 
-    constructor(app, platform) {
+    constructor(platform) {
 
-        this.app = app;
         this.platform = platform;
 
         this.pages = [
@@ -41,8 +45,7 @@ class MyApp {
     }
 
     openPage(page) {
-        let nav = this.app.getComponent('nav');
-        nav.setRoot(page.component);
+        this.nav.setRoot(page.component);
     }
 
 }

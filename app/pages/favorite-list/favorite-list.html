@@ -7,7 +7,7 @@
 
 <ion-content>
     <ion-list>
-        <ion-item-sliding *ngFor="#favorite of favorites">
+        <ion-item-sliding *ngFor="let favorite of favorites">
             <button ion-item (click)="itemTapped($event, favorite)">
                 <ion-thumbnail item-left>
                     <img src="{{favorite.property.thumbnail}}"/>
