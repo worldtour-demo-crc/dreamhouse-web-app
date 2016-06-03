@@ -43,16 +43,11 @@ client.query('SELECT * FROM salesforce.broker__c', function(error, data) {
     favoriteTable = schema + 'favorite__c';
     brokerTable = schema + 'broker__c';
 
-    client.query('SELECT DISTINCT(user__c) FROM salesforce.favorite__c', function(error, data) {
-      var userIds = data.rows.map(function(row) {
-        return row.user__c;
+    // become the user with the least favorites
+    client.query('SELECT user__c, COUNT(property__c) FROM salesforce.favorite__c GROUP BY user__c', function(error, data) {
+      user__c = data.rows.reduce(function(prev, current) {
+        return (prev.count < current.count) ? prev.user__c : current.user__c
       });
-
-      userIds = userIds.filter(function(userId) {
-        return userId != null;
-      });
-
-      user__c = userIds[0];
     });
   }
 });
@@ -117,8 +112,8 @@ app.get('/recommendations', function(req, res) {
     uri: url,
     method: 'POST',
     json: {
-      "userId": user__c,
-      "numResults": 10
+      userId: user__c,
+      numResults: 10
     }
   };
 
