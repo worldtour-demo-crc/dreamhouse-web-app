@@ -118,17 +118,23 @@ app.get('/recommendations', function(req, res) {
   };
 
   require('request').post(options, function (error, response, body) {
-    client.query('SELECT * FROM ' + propertyTable, function(error, data) {
-      var recommendations = Object.keys(body.propertyRatings).map(function(propertyId) {
-        return data.rows.find(function(property) {
-          return property.sfid == propertyId;
-        });
+    if (response.statusCode == 200) {
+      client.query('SELECT * FROM ' + propertyTable, function (error, data) {
+         var recommendations = Object.keys(body.propertyRatings).map(function(propertyId) {
+          return data.rows.find(function(property) {
+            return property.sfid == propertyId;
+          });
+         });
+
+        // todo: exclude properties user already has favorited
+
+        res.json(recommendations);
       });
-
-      // todo: exclude properties user already has favorited
-
-      res.json(recommendations);
-    });
+    }
+    else {
+      console.log(`Failed to get recommendations for user = ${user__c} --- verify that the user has favorited a property and then relearn in PIO`);
+      res.json([]);
+    }
   });
 
 });
