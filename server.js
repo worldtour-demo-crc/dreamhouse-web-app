@@ -2,6 +2,7 @@ var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
 var pg = require('pg');
+var Kafka = require('no-kafka');
 
 var app = express();
 
@@ -10,6 +11,31 @@ app.use(express.static(path.join('www', 'build')));
 
 app.use(bodyParser.json());
 
+var brokerUrls = process.env.KAFKA_URL.replace(/\+ssl/g,'');
+
+var producer = new Kafka.Producer({
+  connectionString: brokerUrls,
+  ssl: {
+    certFile: './client.crt',
+    keyFile: './client.key'
+  }
+});
+
+producer.init();
+
+app.use(function (req, res, next) {
+  var data = {
+    path: req.path,
+    body: req.body
+  };
+  producer.send({
+    topic: 'interactions',
+    message: {
+      value: JSON.stringify(data)
+    }
+  });
+  next();
+});
 
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/dreamhouse';
 

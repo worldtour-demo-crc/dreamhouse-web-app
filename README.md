@@ -7,20 +7,36 @@ This sample app is a mobile web app for [DreamHouse](https://dreamhouse-site.her
 
 This app is built with Ionic and Node.js so you can easily run it locally and on Heroku.
 
-Run Locally:
+Run on Heroku:
 
+1. [![Deploy on Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/dreamhouseapp/dreamhouse-web-app#kafka)
+1. Create a Kafka topic:
+
+        heroku kafka:create -r heroku-kafka interactions --partitions 1
+
+1. Check out the app: `http://<YOUR APP NAME>.herokuapp.com`
+
+
+Run Locally:
 1. [Install and start Postgres](https://wiki.postgresql.org/wiki/Detailed_installation_guides)
 1. [Install Node.js](https://nodejs.org/en/)
 1. Create a database in Postgres named `dreamhouse`
 1. [Install gulp](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)
 1. Fetch the NPM dependencies: `npm install`
+1. Get the Kafka environment variables from a Heroku app:
+
+        heroku config -s -a APP_NAME > .env
+        set -o allexport
+        source .env
+        set +o allexport
+
+1. Create the Kafka certs:
+
+        ./env.sh
+        
 1. Start the app: `gulp serve`
 1. Check out the app: [http://localhost:8200/](http://localhost:8200/)
 
-Run on Heroku:
-
-1. [![Deploy on Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/dreamhouseapp/dreamhouse-web-app)
-1. Check out the app: `http://<YOUR APP NAME>.herokuapp.com`
 
 Use Heroku Connect:
 
