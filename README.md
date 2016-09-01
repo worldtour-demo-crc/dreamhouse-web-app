@@ -33,7 +33,7 @@ Run Locally:
 1. Create the Kafka certs:
 
         ./env.sh
-        
+
 1. Start the app: `gulp serve`
 1. Check out the app: [http://localhost:8200/](http://localhost:8200/)
 
