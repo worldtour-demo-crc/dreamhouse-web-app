@@ -18,6 +18,7 @@ Run on Heroku:
 
 
 Run Locally:
+
 1. [Install and start Postgres](https://wiki.postgresql.org/wiki/Detailed_installation_guides)
 1. [Install Node.js](https://nodejs.org/en/)
 1. Create a database in Postgres named `dreamhouse`
