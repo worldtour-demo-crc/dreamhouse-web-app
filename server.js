@@ -23,20 +23,6 @@ var producer = new Kafka.Producer({
 
 producer.init();
 
-app.use(function (req, res, next) {
-  var data = {
-    path: req.path,
-    body: req.body
-  };
-  producer.send({
-    topic: 'interactions',
-    message: {
-      value: JSON.stringify(data)
-    }
-  });
-  next();
-});
-
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/dreamhouse';
 
 if (process.env.DATABASE_URL !== undefined) {
@@ -49,6 +35,7 @@ client.connect();
 var propertyTable = 'property__c';
 var favoriteTable = 'favorite__c';
 var brokerTable = 'broker__c';
+var user__c = null;
 
 // setup the demo data if needed
 client.query('SELECT * FROM salesforce.broker__c', function(error, data) {
@@ -67,7 +54,28 @@ client.query('SELECT * FROM salesforce.broker__c', function(error, data) {
     favoriteTable = schema + 'favorite__c';
     brokerTable = schema + 'broker__c';
   }
+
+  client.query('SELECT user__c FROM ' + favoriteTable + ' GROUP BY user__c', function(error, data) {
+    user__c = data.rows[Math.floor(Math.random() * data.rows.length)].user__c;
+  });
 });
+
+
+function sendInteraction(propertyId, eventType) {
+  var data = {
+    userId: user__c,
+    propertyId: propertyId,
+    eventType: eventType,
+    date: Date.now()
+  };
+
+  producer.send({
+    topic: 'interactions',
+    message: {
+      value: JSON.stringify(data)
+    }
+  });
+}
 
 
 app.get('/property', function(req, res) {
@@ -77,6 +85,7 @@ app.get('/property', function(req, res) {
 });
 
 app.get('/property/:id', function(req, res) {
+  sendInteraction(req.params.id, "view");
   client.query('SELECT ' + propertyTable + '.*, ' + brokerTable + '.sfid AS broker__c_sfid, ' + brokerTable + '.name AS broker__c_name, ' + brokerTable + '.email__c AS broker__c_email__c, ' + brokerTable + '.phone__c AS broker__c_phone__c, ' + brokerTable + '.mobile_phone__c AS broker__c_mobile_phone__c, ' + brokerTable + '.title__c AS broker__c_title__c, ' + brokerTable + '.picture__c AS broker__c_picture__c FROM ' + propertyTable + ' INNER JOIN ' + brokerTable + ' ON ' + propertyTable + '.broker__c = ' + brokerTable + '.sfid WHERE ' + propertyTable + '.sfid = $1', [req.params.id], function(error, data) {
     res.json(data.rows[0]);
   });
@@ -90,6 +99,7 @@ app.get('/favorite', function(req, res) {
 });
 
 app.post('/favorite', function(req, res) {
+  sendInteraction(req.body.property__c, "favorite");
   client.query('INSERT INTO ' + favoriteTable + ' (property__c) VALUES ($1)', [req.body.property__c], function(error, data) {
     res.json(data);
   });
