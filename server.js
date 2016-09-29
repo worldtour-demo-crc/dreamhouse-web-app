@@ -46,8 +46,8 @@ client.query('SELECT * FROM salesforce.broker__c', function(error, data) {
     // become the user with the least favorites
     client.query('SELECT user__c, COUNT(property__c) FROM salesforce.favorite__c GROUP BY user__c', function(error, data) {
       user__c = data.rows.reduce(function(prev, current) {
-        return (prev.count < current.count) ? prev.user__c : current.user__c
-      });
+        return (prev.count < current.count) ? prev : current;
+      }).user__c;
     });
   }
 });
