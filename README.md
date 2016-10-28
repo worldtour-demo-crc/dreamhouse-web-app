@@ -10,12 +10,19 @@ This app is built with Ionic and Node.js so you can easily run it locally and on
 Run on Heroku:
 
 1. [![Deploy on Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/dreamhouseapp/dreamhouse-web-app#kafka)
+1. [Install the Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line)
+1. Install the Heroku CLI Kafka Plugin
+
+        heroku plugins:install heroku-kafka
+
 1. Create a Kafka topic:
 
-        heroku kafka:create -r heroku-kafka interactions --partitions 1
+        heroku kafka:topics:create -a HEROKU_APP_NAME interactions
 
-1. Check out the app: `http://<YOUR APP NAME>.herokuapp.com`
+1. Check out the app: `http://HEROKU_APP_NAME.herokuapp.com`
+1. Check out the events as you view properties in the web app:
 
+        heroku kafka:topics:tail -a HEROKU_APP_NAME interactions
 
 Run Locally:
 
