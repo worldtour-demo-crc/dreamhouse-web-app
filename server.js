@@ -1,6 +1,7 @@
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
+var fileUpload = require('express-fileupload');
 var pg = require('pg');
 
 var app = express();
@@ -8,8 +9,10 @@ var app = express();
 app.use(express.static('www'));
 app.use(express.static(path.join('www', 'build')));
 
+app.use(fileUpload());
 app.use(bodyParser.json());
 
+var dreamhouseEinsteinVisionUrl = process.env.EINSTEIN_VISION_URL;
 
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/dreamhouse';
 
@@ -85,6 +88,31 @@ app.get('/broker', function(req, res) {
 app.get('/broker/:sfid', function(req, res) {
   client.query('SELECT * FROM ' + brokerTable + ' WHERE sfid = $1', [req.params.sfid], function(error, data) {
     res.json(data.rows[0]);
+  });
+});
+
+app.post('/search', function(req, res) {
+  var url = dreamhouseEinsteinVisionUrl + "/predict";
+
+  var formData = {
+    filename: req.files.image.name,
+    sampleContent: {
+      value: req.files.image.data,
+      options: {
+        filename: req.files.image.name,
+        contentType: req.files.image.mimetype
+      }
+    }
+  };
+
+  require('request').post({url: url, formData: formData}, function(err, httpResponse, body) {
+    if (err) {
+      console.err(err);
+      res.send(err);
+    }
+    else {
+      res.send(body);
+    }
   });
 });
 
