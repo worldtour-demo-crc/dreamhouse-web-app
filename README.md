@@ -19,7 +19,7 @@ Run Locally:
 
 Run on Heroku:
 
-1. [![Deploy on Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/dreamhouseapp/dreamhouse-web-app)
+1. [![Deploy on Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/dreamhouseapp/dreamhouse-web-app/tree/einstein-vision)
 1. Check out the app: `http://<YOUR APP NAME>.herokuapp.com`
 
 Use Heroku Connect:
